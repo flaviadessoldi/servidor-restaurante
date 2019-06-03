@@ -21,6 +21,11 @@ servidor.delete("/comidas/:id",(request, response) =>{
     response.sendStatus(204)
 })
 
+servidor.put("/comidas/:id",(request, response) =>{
+    controller.change(request.params.id, request.body)
+    response.sendStatus(200)
+})
+
 servidor.listen(3000)
 console.log('servidor rodando na porta 3000')
 

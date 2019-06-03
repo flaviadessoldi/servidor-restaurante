@@ -18,6 +18,23 @@ const remove = (id)=>{
     })
 }
 
-module.exports = {getAll, add, remove}
+
+const change = (id, altercao)=>{
+    let pratoExistente = getAll().comidas
+
+    pratoExistente.filter((comida)=>{
+        if (comida.id === id){
+            let nome = () => {comida.nome = altercao.nome}
+            let descricao = ()=> {comida.descricao = alteracao.descricao}
+            let imagem = ()=> {comida.imagem = altercao.imagem}
+
+            return nome(), descricao(), imagem()
+
+        }
+    })
+
+}
+
+module.exports = {getAll, add, remove, change}
 
 
