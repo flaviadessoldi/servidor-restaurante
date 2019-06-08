@@ -21,7 +21,14 @@ servidor.delete("/comidas/:id",(request, response) =>{
     response.sendStatus(204)
 })
 
-servidor.put("/comidas/:id",(request, response) =>{
+
+servidor.patch("/comidas/:id",  bodyParser.json(), (request, response)=>{
+    const id = request.params.id
+    controller.update(id, request.body)
+    response.sendStatus(204)
+})
+
+servidor.put("/comidas/:id",bodyParser.json(), (request, response) =>{
     controller.change(request.params.id, request.body)
     response.sendStatus(200)
 })

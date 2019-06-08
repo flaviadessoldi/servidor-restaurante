@@ -1,23 +1,36 @@
 const repository = require('./ComidasRepository')
 
 const getAll = ()=>{
-    return repository.comidas
+    return repository.comidas.pratosFavoritos
 }
 
 const add = (comida) => {
     comida.id = Math.random().toString(36).substr(-8)
-    getAll().pratosFavoritos.push(comida)
+    getAll().push(comida)
 }
 
 const remove = (id)=>{
    let comidasRestantes = getAll()
 
-   getAll().pratosFavoritos = comidasRestantes.pratosFavoritos.filter((comida)=>{
+   repository.comidas.pratosFavoritos = comidasRestantes.pratosFavoritos.filter((comida)=>{
         return comida.id !== id
-
     })
 }
 
+const update = (id, comida)=>{
+    let comidaCadastrada = getAll().find(comida =>{
+        return comida.id ===id
+    })
+
+    console.log(comida)
+    if(comida.nome !== undefined){
+    comidaCadastrada.nome = comida.nome
+    }
+
+    if(comida.descricao !== undefined){
+    comidaCadastrada.descricao = comida.descricao
+    }
+}
 
 const change = (id, altercao)=>{
     let pratoExistente = getAll().comidas
@@ -35,6 +48,6 @@ const change = (id, altercao)=>{
 
 }
 
-module.exports = {getAll, add, remove, change}
+module.exports = {getAll, add, remove, change, update}
 
 
