@@ -1,12 +1,31 @@
-const repository = require('./ComidasRepository')
+const {connect} = require('./ComidasRepository')
+const comidasModel = require('./ComidasSchema')
+connect()
 
-const getAll = ()=>{
-    return repository.comidas.pratosFavoritos
+const getAll = async ()=>{
+    return comidasModel.find((error, comidas)=>{
+        if(error){
+            console.error(error)
+        }
+        return comidas
+    })
 }
 
+const getById= (id)=>{
+    return comidasModel.findById(
+        id,
+        (error, comida)=>{
+            return comida
+        }
+    )
+ }
+
 const add = (comida) => {
-    comida.id = Math.random().toString(36).substr(-8)
-    getAll().push(comida)
+   const novaComida = new comidasModel({
+       nome: comida.nome,
+       descricao: comida.descricao
+   })
+   novaComida.save()
 }
 
 const remove = (id)=>{
@@ -17,20 +36,25 @@ const remove = (id)=>{
     })
 }
 
-const update = (id, comida)=>{
-    let comidaCadastrada = getAll().find(comida =>{
-        return comida.id ===id
+const update = (id, comida) => {
+    let comidaCadastrada = getAll().find(comida => {
+      return comida.id === id
     })
-
-    console.log(comida)
-    if(comida.nome !== undefined){
-    comidaCadastrada.nome = comida.nome
+  
+    if(comidaCadastrada === undefined){ // nao encontrou a comida
+      return false
     }
-
-    if(comida.descricao !== undefined){
-    comidaCadastrada.descricao = comida.descricao
+    else {
+      if(comida.nome !== undefined) {
+        comidaCadastrada.nome = comida.nome
+      }
+      if(comida.descricao !== undefined) {
+        comidaCadastrada.descricao = comida.descricao
+      }
+  
+      return true
     }
-}
+  }
 
 const change = (id, altercao)=>{
     let pratoExistente = getAll().comidas
@@ -42,12 +66,10 @@ const change = (id, altercao)=>{
             let imagem = ()=> {comida.imagem = altercao.imagem}
 
             return nome(), descricao(), imagem()
-
         }
     })
-
 }
 
-module.exports = {getAll, add, remove, change, update}
+module.exports = {getAll, add, remove, change, update, getById}
 
 
