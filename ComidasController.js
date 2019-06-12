@@ -11,7 +11,7 @@ const getAll = async ()=>{
     })
 }
 
-const getById= (id)=>{
+const getById = async (id)=>{
     return comidasModel.findById(
         id,
         (error, comida)=>{
@@ -20,41 +20,35 @@ const getById= (id)=>{
     )
  }
 
-const add = (comida) => {
-   const novaComida = new comidasModel({
-       nome: comida.nome,
-       descricao: comida.descricao
-   })
-   novaComida.save()
+ const add = (comida) => {
+  const novaComida = new comidasModel({
+    nome: comida.nome,
+    descricao: comida.descricao
+  })
+  
+  novaComida.save()
 }
 
-const remove = (id)=>{
-   let comidasRestantes = getAll()
-
-   repository.comidas.pratosFavoritos = comidasRestantes.pratosFavoritos.filter((comida)=>{
-        return comida.id !== id
-    })
+const remove = async (id)=>{
+  //  let comidasRestantes = getAll()
+  //  repository.comidas.pratosFavoritos = comidasRestantes.pratosFavoritos.filter((comida)=>{
+  //       return comida.id !== id
+  //   })
+  return comidasModel.findByIdAndDelete(id)
 }
 
-const update = (id, comida) => {
-    let comidaCadastrada = getAll().find(comida => {
-      return comida.id === id
-    })
-  
-    if(comidaCadastrada === undefined){ // nao encontrou a comida
-      return false
+const update = async (id, comida) => {
+  return comidasModel.findByIdAndUpdate(
+    id,
+    { $set: comida },
+    { new: true }, // RETORNAR A COMIDA JA ATUALIZADA NO CALLBACK
+    function (error, comida) { // é o nosso callback
+      return comida
     }
-    else {
-      if(comida.nome !== undefined) {
-        comidaCadastrada.nome = comida.nome
-      }
-      if(comida.descricao !== undefined) {
-        comidaCadastrada.descricao = comida.descricao
-      }
-  
-      return true
-    }
-  }
+  )
+
+}
+
 
 const change = (id, altercao)=>{
     let pratoExistente = getAll().comidas

@@ -14,31 +14,28 @@ servidor.get("/comidas", async (request, response)=>{
     .then(comidas => response.send(comidas))
 })
 
-servidor.get("/comidas/:id",(request, response)=>{
+servidor.get("/comidas/:id", async (request, response)=>{
   const id = request.params.id
-  response.send(controller.getById(id))
+  controller.getById(id)
+  .then(comida=> response.send(comida))
 })
 
-servidor.post("/comidas", bodyParser.json(), (request, response)=>{
-    response.send(200).send(controller.add(request.body))
+servidor.post('/comidas', (request, response) => {
+  response.status(200).send(controller.add(request.body))
 })
 
-servidor.delete("/comidas/:id",(request, response) =>{
-    controller.remove(request.params.id)
-    response.sendStatus(204)
+servidor.delete('/comidas/:id', async (request, response) => {
+  controller.remove(request.params.id)
+    .then(comida => response.sendStatus(204))
 })
 
-servidor.patch('/comidas/:id', bodyParser.json(), (request, response) => {
-    const id = request.params.id
-    const sucesso = controller.update(id, request.body)
-    if(sucesso){
-      response.sendStatus(204)
-    } else {
-      response.sendStatus(404)
-    }
-  })
+servidor.patch('/comidas/:id', async (request, response) => {
+  const id = request.params.id
+  controller.update(id, request.body)
+    .then(response.sendStatus(204))
+})
 
-servidor.put("/comidas/:id",bodyParser.json(), (request, response) =>{
+servidor.put("/comidas/:id", (request, response) =>{
     controller.change(request.params.id, request.body)
     response.sendStatus(200)
 })
