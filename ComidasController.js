@@ -11,19 +11,17 @@ const getAll = async ()=>{
     })
 }
 
-const getById = async (id)=>{
-    return comidasModel.findById(
-        id,
-        (error, comida)=>{
-            return comida
-        }
-    )
- }
+const getById = (id) => {
+  return comidasModel.findById(id) 
+}
+
 
  const add = (comida) => {
   const novaComida = new comidasModel({
     nome: comida.nome,
-    descricao: comida.descricao
+    descricao: comida.descricao,
+    imagem: comida.imagem
+  
   })
   
   novaComida.save()
@@ -37,16 +35,12 @@ const remove = async (id)=>{
   return comidasModel.findByIdAndDelete(id)
 }
 
-const update = async (id, comida) => {
+const update = (id, comida) => {
   return comidasModel.findByIdAndUpdate(
     id,
     { $set: comida },
     { new: true }, // RETORNAR A COMIDA JA ATUALIZADA NO CALLBACK
-    function (error, comida) { // é o nosso callback
-      return comida
-    }
   )
-
 }
 
 
