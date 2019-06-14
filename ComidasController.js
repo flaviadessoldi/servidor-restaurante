@@ -27,11 +27,7 @@ const getById = (id) => {
   novaComida.save()
 }
 
-const remove = async (id)=>{
-  //  let comidasRestantes = getAll()
-  //  repository.comidas.pratosFavoritos = comidasRestantes.pratosFavoritos.filter((comida)=>{
-  //       return comida.id !== id
-  //   })
+const remove = (id)=>{
   return comidasModel.findByIdAndDelete(id)
 }
 
